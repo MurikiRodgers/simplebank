@@ -6,19 +6,30 @@ import (
 	"os"
 	"testing"
 
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
 var testQueries *Queries
 var testDB *sql.DB
 
-const (
-	dbDriver = "postgres"
-	dbSource = "postgresql://postgres:8901@localhost:5433/simple_bank?sslmode=disable"
-)
-
 func TestMain(m *testing.M) {
-	var err error
+	err := godotenv.Load("../../.env")
+
+	if err != nil {
+		log.Println("Error! Unable to find .env file")
+	}
+
+	dbSource := os.Getenv("DB_SOURCE")
+
+	if dbSource == "" {
+		log.Fatal("dbSource not set in .env")
+	}
+	dbDriver := os.Getenv("DB_DRIVER")
+
+	if dbDriver == "" {
+		log.Fatal("dbDriver not set in .env")
+	}
 	testDB, err = sql.Open(dbDriver, dbSource)
 
 	if err != nil {
