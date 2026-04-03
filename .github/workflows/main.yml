@@ -22,6 +22,8 @@ jobs:
           POSTGRES_USER: root
           POSTGRES_PASSWORD: secret
           POSTGRES_DB: simple_bank
+          DB_DRIVER: ${{vars.DB_DRIVER}}
+          DB_SOURCE: ${{vars.DB_SOURCE}}
         ports:
           - 5433:5432   
        
